@@ -1,0 +1,21 @@
+{
+   "background": {
+      "page": "background.html"
+   },
+   "content_scripts": [ {
+      "css": [ "content.css" ],
+      "js": [ "content.js" ],
+      "matches": [ "<all_urls>" ]
+   } ],
+   "description": "Include information from www.daftdrop.com on daft.ie ads.",
+   "manifest_version": 2,
+   "name": "Daftdrop draft.ie",
+   "update_url": "http://clients2.google.com/service/update2/crx",
+   "version": "1.0",
+   "options_page": "options.html",
+   "web_accessible_resources": [ "bar.css", "bar.html", "bar.js", "templates.js", "jquery-1.9.1.min.js" ],
+   "permissions": [
+      "http://www.daft.ie/"
+   ],
+   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
