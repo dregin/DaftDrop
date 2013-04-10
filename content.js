@@ -1,18 +1,17 @@
-var DropButton = '<span class=\'bar\'>|</span><button id=\'dropButton\' type=\'button\'>Daft Drop!</button>';
+var dropDiv = document.createElement('div');
+dropDiv.setAttribute('id', 'daft-drop');
+dropDiv.innerHTML = 'TEST DIV';
 
-$('#smi-summary-items').append(DropButton);
+var clearFix = document.createElement('div');
+clearFix.setAttribute('class', 'clearfix');
 
-
-$('#smi-object-info').after('<div>TEST DIV TEST DIV TEST DIV</div>');
-
-
-
-$('#smi-summary-items'); 
-<div id="smi-summary-items">
-  <div>€195,000</div>
-  <span class="header_text">Apartment for sale</span>
-  <span class="bar">|</span>
-  <span class="header_text">3 Bedrooms</span>
-  <span class="bar">|</span>
-  <a style="font-weight: normal;" href="aib/">Finance with AIB Mortgages</a>
-</div>
+$(document).ready(function(){
+	var addressBox = $('#address_box');
+	console.log(addressBox);
+	if (addressBox != ''){
+		console.log('Appending div.');
+		addressBox.append(clearFix);
+		addressBox.append(dropDiv);
+		console.log('Finished appending div.')
+	}
+});
