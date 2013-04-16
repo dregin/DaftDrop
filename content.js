@@ -13,5 +13,12 @@ $(document).ready(function(){
 		addressBox.append(clearFix);
 		addressBox.append(dropDiv);
 		console.log('Finished appending div.')
+		getHomeInfo(687825);
 	}
 });
+
+function getHomeInfo(daftId){
+	// Web Service Call for templates.
+	chrome.extension.sendRequest(daftId);
+	console.log("Request sent.");
+}
