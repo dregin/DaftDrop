@@ -1,7 +1,7 @@
 {
    "background": {"scripts": ["background.js"] },
    "content_scripts": [ {
-      "js": [ "jquery-1.9.1.min.js", "content.js" ],
+      "js": [ "content.js" ],
       "matches": [ "http://www.daft.ie/*" ]
    } ],
    "description": "Include information from www.daftdrop.com on daft.ie ads.",
