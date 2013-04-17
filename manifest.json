@@ -2,6 +2,7 @@
    "background": {"scripts": ["background.js"] },
    "content_scripts": [ {
       "js": [ "content.js" ],
+      "css":        ["content.css"],
       "matches": [ "http://www.daft.ie/*" ]
    } ],
    "description": "Include information from www.daftdrop.com on daft.ie ads.",

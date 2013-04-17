@@ -1,0 +1,35 @@
+#daft-drop{
+	float: left;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 19px;
+	margin-top: 1px;
+}
+
+#daft-drop span.bar {
+	color: #dfdfdf;
+	display: block;
+	float: left;
+	text-align: center;
+	width: 9px;
+}
+
+#daft-drop .original_title {
+	display: block;
+	float: left;
+}
+
+#daft-drop .original_info {
+	display: block;
+	float: left;
+}
+
+#daft-drop .change_title {
+	display: block;
+	float: right;
+}
+
+#daft-drop .change_info {
+	display: block;
+	float: right;
+}
