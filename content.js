@@ -19,6 +19,8 @@ $(document).ready(function(){
 
 function getHomeInfo(daftId){
 	// Web Service Call for templates.
-	chrome.extension.sendRequest(daftId);
-	console.log("Request sent.");
+	chrome.extension.sendMessage(daftId, function(reply){
+	    console.log("DaftDrop response for daftId: " + reply);
+	    // Add div to page here using info in reply.
+	});
 }
