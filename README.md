@@ -27,6 +27,7 @@ To install it manually, do the following.
 The extension is now installed.
 
 Browse to a daft.ie page and see some useful information (hit refresh if it doesn't show first time...)
+
 e.g. http://www.daft.ie/searchsale.daft?id=687825
 
 Please log an issue against this repo if you find any problems while using the extension.
