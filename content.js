@@ -32,6 +32,9 @@ function getHomeInfo(daftId){
 function insertDaftDropDiv(originalPriceString, changeStringSpan){
 	var addressBox = document.getElementById('address_box');
 
+	var dropDiv = document.createElement('div');
+	dropDiv.setAttribute('id', 'drop-div');
+	/*
 	var dropDiv = document.createElement("div");
 	dropDiv.setAttribute("style", "width: 25%");
 
@@ -61,6 +64,25 @@ function insertDaftDropDiv(originalPriceString, changeStringSpan){
     dropDiv.appendChild(changeStringSpan);
 
     addressBox.appendChild(dropDiv);
+    */
+
+    addressBox.appendChild(dropDiv);
+    load('content.html', function(response){
+    	document.getElementById('drop-div').innerHTML = response;
+    });
+}
+
+function load(fileName, callback){
+	var contentLocation = chrome.extension.getURL(fileName);
+    var xhr= new XMLHttpRequest();
+	xhr.open('GET', contentLocation, true);
+	xhr.onreadystatechange= function() {
+	    if (this.readyState!==4) return;
+	    if (this.status!==200) return; // or whatever error handling you want
+	    console.log("RESPONE: " + this.responseText);
+	    callback(this.responseText);
+	};
+	xhr.send();
 }
 
 function updateDaftDropDiv(daftDropResponse){
