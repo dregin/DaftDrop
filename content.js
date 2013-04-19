@@ -25,8 +25,7 @@ function getHomeInfo(daftId){
 	// Web Service Call for ad details.
 	chrome.extension.sendMessage(daftId, function(reply){
 	    console.log("DaftDrop response for daftId: " + reply);
-	    insertDaftDropDiv(function(text){
-	    	console.log(text);
+	    insertDaftDropDiv(function(){
 	    	parseAdInfo(reply, function(details){
 		    	console.log("tr:" + document.getElementById('original-price-value'));
 		    	updateDaftDropDiv(details);
@@ -76,11 +75,11 @@ function insertDaftDropDiv(callback){
 	var clearfixDiv = document.createElement('div');
 	clearfixDiv.setAttribute('class','clearfix');
 	addressBox.appendChild(clearfixDiv);
-	addressBox.appendChild(document.createElement('br'))
+	addressBox.appendChild(document.createElement('h2'))
     addressBox.appendChild(dropDiv);
     load('content.html', function(response){
     	document.getElementById('drop-div').innerHTML = response;
-    	callback('LOLTEXT!');
+    	callback();
     });
 }
 
