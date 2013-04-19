@@ -22,18 +22,25 @@ document.onreadystatechange = function () {
 }
 
 function getHomeInfo(daftId){
-	// Web Service Call for templates.
+	// Web Service Call for ad details.
 	chrome.extension.sendMessage(daftId, function(reply){
 	    console.log("DaftDrop response for daftId: " + reply);
-	    updateDaftDropDiv(reply);
+	    insertDaftDropDiv(function(text){
+	    	console.log(text);
+	    	parseAdInfo(reply, function(details){
+		    	console.log("tr:" + document.getElementById('original-price-value'));
+		    	updateDaftDropDiv(details);
+	    	});
+	    });
 	});
 }
 
-function insertDaftDropDiv(originalPriceString, changeStringSpan){
+function insertDaftDropDiv(callback){
 	var addressBox = document.getElementById('address_box');
 
 	var dropDiv = document.createElement('div');
 	dropDiv.setAttribute('id', 'drop-div');
+
 	/*
 	var dropDiv = document.createElement("div");
 	dropDiv.setAttribute("style", "width: 25%");
@@ -66,65 +73,79 @@ function insertDaftDropDiv(originalPriceString, changeStringSpan){
     addressBox.appendChild(dropDiv);
     */
 
+	var clearfixDiv = document.createElement('div');
+	clearfixDiv.setAttribute('class','clearfix');
+	addressBox.appendChild(clearfixDiv);
+	addressBox.appendChild(document.createElement('br'))
     addressBox.appendChild(dropDiv);
     load('content.html', function(response){
     	document.getElementById('drop-div').innerHTML = response;
+    	callback('LOLTEXT!');
     });
 }
 
 function load(fileName, callback){
 	var contentLocation = chrome.extension.getURL(fileName);
-    var xhr= new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
 	xhr.open('GET', contentLocation, true);
-	xhr.onreadystatechange= function() {
+	xhr.onreadystatechange = function() {
 	    if (this.readyState!==4) return;
 	    if (this.status!==200) return; // or whatever error handling you want
-	    console.log("RESPONE: " + this.responseText);
+	    console.log("RESPONSE: " + this.responseText);
 	    callback(this.responseText);
 	};
 	xhr.send();
 }
 
-function updateDaftDropDiv(daftDropResponse){
+function updateDaftDropDiv(details){
+	document.getElementById('original-price-value').innerText = details['originalPrice'];
+	document.getElementById('change-percentage-value').innerText = details['changePercentageSpan'];
+}
+
+function parseAdInfo(webServiceResponse, callback){
+	details = {};
+
 	// Add div to page here using info in reply.
-	var daftDropResponseAttribs = daftDropResponse.split(',');
+	var daftDropResponseAttribs = webServiceResponse.split(',');
+	/*
 	for(var i = 0; i < daftDropResponseAttribs.length; i++){
 		console.log(i + " : " + daftDropResponseAttribs[i]);
 	}
-	var originalPriceString = "€" + numberWithCommas(daftDropResponseAttribs[2]);
-	var originalPrice = daftDropResponseAttribs[2];
-	var currentPrice = daftDropResponseAttribs[8];
+	*/
+	//var originalPriceString = "€" + numberWithCommas(daftDropResponseAttribs[2]);
 	
+	details['currentPrice'] = daftDropResponseAttribs[8];
+	details['originalPrice'] = daftDropResponseAttribs[2];
 
-	if (originalPrice > currentPrice){
-		var changeString = "-" + (((originalPrice - currentPrice)/originalPrice)*100).toFixed(2) + "%";
-		var changeStringSpan = document.createElement("h3");
-		changeStringSpan.setAttribute("class", "change_info");
-		changeStringSpan.setAttribute("style", "color: green; float: right;");
-		changeStringSpan.innerText = changeString;
-	}
-	else if(originalPrice < currentPrice){
-		var changeString = "+" + (((currentPrice - originalPrice)/currentPrice)*100).toFixed(2) + "%";
-		var changeStringSpan = document.createElement("h4");
-		changeStringSpan.setAttribute("class", "change_info");
-		changeStringSpan.setAttribute("style", "color: red; float: right;");
-		changeStringSpan.innerText = changeString;
-	}
-	else{
-		var changeString = "None";
-		var changeStringSpan = document.createElement("h4");
-		changeStringSpan.setAttribute("class", "change_info");
-		changeStringSpan.setAttribute("style", "color: red; float: right;");
-		changeStringSpan.innerText = changeString;
-	}
+	getChangePercentageHtml(details['currentPrice'], details['originalPrice'], function(response){
+		details['changePercentageSpan'] = response;
+	});
 
-	console.log("Change: " + changeString);
+	numberWithCommas(daftDropResponseAttribs[2], function(prettifiedOriginalPrice){
+		details['originalPrice'] = "€" + prettifiedOriginalPrice;
+	});
+	console.log("Change: " + details['changePercentageSpan']);
+	callback(details);
 	//console.log("Current Price is: €" + numberWithCommas(daftDropResponseAttribs[8]));
 	//var onMarketSince = new Date(daftDropResponseAttribs[46].split('/')[1].replace(/\D/g,''));
 	//console.log("On Market Since: " + daftDropResponseAttribs[46].split('/')[1].replace(/\D/g,''));
-	insertDaftDropDiv(originalPriceString, changeStringSpan);
+	//insertDaftDropDiv(originalPriceString, changeStringSpan);
 }
 
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+function getChangePercentageHtml(currentPrice, originalPrice, callback){
+	if (originalPrice > currentPrice){
+		var changeString = "-" + (((originalPrice - currentPrice)/originalPrice)*100).toFixed(2) + "%";
+		document.getElementById('change-percentage-value').setAttribute('class', 'dropped');
+	}
+	else if(originalPrice < currentPrice){
+		var changeString = "+" + (((currentPrice - originalPrice)/currentPrice)*100).toFixed(2) + "%";
+		document.getElementById('change-percentage-value').setAttribute('class', 'increased');
+	}
+	else{
+		var changeString = "None";
+	}
+	callback(changeString);
+}
+function numberWithCommas(x, callback) {
+    callback(x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 }
