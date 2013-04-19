@@ -1,4 +1,4 @@
-#daft-drop{
+#drop-table{
 	float: left;
 	font-size: 12px;
 	font-weight: 700;
@@ -6,7 +6,7 @@
 	margin-top: 1px;
 }
 
-#daft-drop span.bar {
+#drop-table span.bar {
 	color: #dfdfdf;
 	display: block;
 	float: left;
@@ -14,22 +14,29 @@
 	width: 9px;
 }
 
-#daft-drop .original_title {
+#drop-table .original_title {
 	display: block;
 	float: left;
 }
 
-#daft-drop .original_info {
+#drop-table .original_info {
 	display: block;
 	float: left;
 }
 
-#daft-drop .change_title {
+#drop-table .change_title {
 	display: block;
 	float: right;
 }
 
-#daft-drop .change_info {
-	display: block;
-	float: right;
+.increased {
+	color: red;
+}
+
+.dropped {
+	color: green;
+}
+
+#drop-table td{
+	width: 5em;
 }

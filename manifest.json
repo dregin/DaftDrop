@@ -10,6 +10,7 @@
    "name": "Daft Drop",
    "update_url": "http://clients2.google.com/service/update2/crx",
    "version": "0.1",
+   "web_accessible_resources": [ "content.html" ],
    "permissions": [
       "http://www.daft.ie/*",
       "http://www.daftdrop.com/*"
