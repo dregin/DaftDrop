@@ -8,14 +8,8 @@ clearFix.setAttribute('class', 'clearfix');
 document.onreadystatechange = function () {
 	if (document.readyState == "complete") {
 		var addressBox = document.getElementById('address_box');
-		//console.log(addressBox);
 		if (addressBox != ''){
-			console.log('Appending div.');
-			//addressBox.append(clearFix);
-			//addressBox.append(dropDiv);
-			console.log('Finished appending div.');
 			var daftId = document.getElementById('ad_id').value;
-			console.log("daftId: " + daftId);
 			getHomeInfo(daftId);		//ad_id is already in daft.ie's JS \o\
 		}
 	}
@@ -24,10 +18,8 @@ document.onreadystatechange = function () {
 function getHomeInfo(daftId){
 	// Web Service Call for ad details.
 	chrome.extension.sendMessage(daftId, function(reply){
-	    console.log("DaftDrop response for daftId: " + reply);
 	    insertDaftDropDiv(function(){
 	    	parseAdInfo(reply, function(details){
-		    	console.log("tr:" + document.getElementById('original-price-value'));
 		    	updateDaftDropDiv(details);
 	    	});
 	    });
@@ -90,7 +82,6 @@ function load(fileName, callback){
 	xhr.onreadystatechange = function() {
 	    if (this.readyState!==4) return;
 	    if (this.status!==200) return; // or whatever error handling you want
-	    console.log("RESPONSE: " + this.responseText);
 	    callback(this.responseText);
 	};
 	xhr.send();
@@ -106,13 +97,12 @@ function parseAdInfo(webServiceResponse, callback){
 
 	// Add div to page here using info in reply.
 	var daftDropResponseAttribs = webServiceResponse.split(',');
+
 	/*
 	for(var i = 0; i < daftDropResponseAttribs.length; i++){
 		console.log(i + " : " + daftDropResponseAttribs[i]);
 	}
 	*/
-	//var originalPriceString = "€" + numberWithCommas(daftDropResponseAttribs[2]);
-	
 	details['currentPrice'] = daftDropResponseAttribs[8];
 	details['originalPrice'] = daftDropResponseAttribs[2];
 
@@ -123,12 +113,7 @@ function parseAdInfo(webServiceResponse, callback){
 	numberWithCommas(daftDropResponseAttribs[2], function(prettifiedOriginalPrice){
 		details['originalPrice'] = "€" + prettifiedOriginalPrice;
 	});
-	console.log("Change: " + details['changePercentageSpan']);
 	callback(details);
-	//console.log("Current Price is: €" + numberWithCommas(daftDropResponseAttribs[8]));
-	//var onMarketSince = new Date(daftDropResponseAttribs[46].split('/')[1].replace(/\D/g,''));
-	//console.log("On Market Since: " + daftDropResponseAttribs[46].split('/')[1].replace(/\D/g,''));
-	//insertDaftDropDiv(originalPriceString, changeStringSpan);
 }
 
 function getChangePercentageHtml(currentPrice, originalPrice, callback){
