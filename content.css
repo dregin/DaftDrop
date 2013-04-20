@@ -1,3 +1,11 @@
+#drop-div {
+	float: left;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 19px;
+	margin-top: 1px;
+}
+
 #drop-table{
 	float: left;
 	font-size: 12px;
@@ -39,4 +47,9 @@
 
 #drop-table td{
 	width: 5em;
+}
+
+#drop-table th{
+	width: 5em;
+	align: left;
 }
