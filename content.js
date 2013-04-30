@@ -98,11 +98,11 @@ function parseAdInfo(webServiceResponse, callback){
 	// Add div to page here using info in reply.
 	var daftDropResponseAttribs = webServiceResponse.split(',');
 
-	/*
+	
 	for(var i = 0; i < daftDropResponseAttribs.length; i++){
 		console.log(i + " : " + daftDropResponseAttribs[i]);
 	}
-	*/
+	
 	details['currentPrice'] = daftDropResponseAttribs[8];
 	details['originalPrice'] = daftDropResponseAttribs[2];
 
