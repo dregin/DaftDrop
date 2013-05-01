@@ -58,7 +58,7 @@ function getDate(dateString){
 	var theDate = vK(dateString);
 
 	var day = theDate.getDate();
-	var month = theDate.getMonth();
+	var month = (theDate.getMonth() + 1) % 12; // Have to add 1 because getMonth() returns the month before...
 	var year = theDate.getFullYear();
 
 	var dateString = day + '/' + month + '/' + year;
