@@ -41,7 +41,9 @@ function iX(a) {
     return a.l + a.m * 4194304 + a.h * 17592186044416
 }
 
-function bv(a){return new Date(a)}
+function bv(a){
+	return new Date(a)
+}
 
 function ppb(b,a){return b.charCodeAt(a)}
 function SW(a){if(a>=65&&a<=90){return a-65}if(a>=97){return a-97+26}if(a>=48&&a<=57){return a-48+52}if(a==36){return 62}return 63}
@@ -54,14 +56,13 @@ function vK(a) {
     return bv(iX(a))
 }
 
-function getDate(dateString){
-	var theDate = vK(dateString);
+function getDate(dateString, callback){
+	var theDate = vK(dateString.replace(/\W/g, ''));
 
 	var day = theDate.getDate();
 	var month = (theDate.getMonth() + 1) % 12; // Have to add 1 because getMonth() returns the month before...
 	var year = theDate.getFullYear();
 
 	var dateString = day + '/' + month + '/' + year;
-
-	return vK(dateString)
+	callback(dateString);
 }
