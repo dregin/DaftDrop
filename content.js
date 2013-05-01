@@ -32,38 +32,6 @@ function insertDaftDropDiv(callback){
 	var dropDiv = document.createElement('div');
 	dropDiv.setAttribute('id', 'drop-div');
 
-	/*
-	var dropDiv = document.createElement("div");
-	dropDiv.setAttribute("style", "width: 25%");
-
-	var clearfixDiv = document.createElement("div");
-	clearfixDiv.setAttribute("class","clearfix");
-
-	var dropBarSpan = document.createElement("span");
-	dropBarSpan.text = "|";
-
-	var hLine = document.createElement("h2");		// daft.ie's style adds a nice horizontal bar after h2 divs \o/
-
-    var dropTitleDiv = document.createElement("div");
-    dropTitleDiv.setAttribute('id', 'daft-drop');
-    dropTitleDiv.innerHTML = "<div><span style=\"float:left;\" class=\"original_title\">Original Price</span><span class=\"bar\">|</span><span style=\"float:right;\" class=\"change_title\">Change</span></div>";
-
-    var dropOriginalPriceSpan = document.createElement("span");
-    dropOriginalPriceSpan.setAttribute("class", "original_info");
-    dropOriginalPriceSpan.setAttribute("style", "float: left;");
-    dropOriginalPriceSpan.innerText = originalPriceString;
-
-    addressBox.appendChild(clearfixDiv);
-    addressBox.appendChild(hLine);
-    dropDiv.appendChild(dropTitleDiv);
-    dropDiv.appendChild(clearfixDiv);
-    dropDiv.appendChild(dropOriginalPriceSpan);
-    dropDiv.appendChild(dropBarSpan);
-    dropDiv.appendChild(changeStringSpan);
-
-    addressBox.appendChild(dropDiv);
-    */
-
 	var clearfixDiv = document.createElement('div');
 	clearfixDiv.setAttribute('class','clearfix');
 	addressBox.appendChild(clearfixDiv);
