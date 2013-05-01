@@ -1,16 +1,12 @@
-a = 'TNhk0AA';
-
 var OW = null;
 var eW = {"d":"[Lcom.google.gwt.lang.LongLibBase$LongEmul;","c":4};
 var yL = ["gC","eQ","hC","tS","toString","tM","cM"];
 var zL = [null,null,null,null,null,null,{}];
-//var nX = {"l":0,"m":0,"h":524288};
 var pX = {"l":0,"m":0,"h":0};
 
 function Ywb(){}
 function sX(){}
 function AL(){return Ywb()}
-//function qX(){return Ywb()}
 function DW(a,b,c){return _=new sX,_.l=a,_.m=b,_.h=c,_}
 function CL(a,b,c){AL();for(var d=0,e=b.length;d<e;++d){a[b[d]]=c[d]}}
 
@@ -59,5 +55,13 @@ function vK(a) {
 }
 
 function getDate(dateString){
+	var theDate = vK(dateString);
+
+	var day = theDate.getDate();
+	var month = theDate.getMonth();
+	var year = theDate.getFullYear();
+
+	var dateString = day + '/' + month + '/' + year;
+
 	return vK(dateString)
 }
