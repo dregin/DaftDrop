@@ -58,6 +58,8 @@ function load(fileName, callback){
 function updateDaftDropDiv(details){
 	document.getElementById('original-price-value').innerText = details['originalPrice'];
 	document.getElementById('change-percentage-value').innerText = details['changePercentageSpan'];
+	document.getElementById('change-percentage-date-added-value').innerText = details['dateAdded'];
+	document.getElementById('change-percentage-date-last-value').innerText = details['dateUpdated'];
 }
 
 function parseAdInfo(webServiceResponse, callback){
@@ -66,11 +68,14 @@ function parseAdInfo(webServiceResponse, callback){
 	// Add div to page here using info in reply.
 	var daftDropResponseAttribs = webServiceResponse.split(',');
 
-	
+	/*
 	for(var i = 0; i < daftDropResponseAttribs.length; i++){
 		console.log(i + " : " + daftDropResponseAttribs[i]);
 	}
-	
+	*/
+
+	// Get Price Information
+
 	details['currentPrice'] = daftDropResponseAttribs[8];
 	details['originalPrice'] = daftDropResponseAttribs[2];
 
@@ -83,8 +88,13 @@ function parseAdInfo(webServiceResponse, callback){
 	});
 
 	// Get Date information
-	details['dateAdded'] = getDate(daftDropResponseAttribs[5]);
-	details['dateUpdated'] = getDate(daftDropResponseAttribs[11]);
+	getDate(daftDropResponseAttribs[5], function(response){
+		details['dateAdded'] = response;
+	});
+
+	getDate(daftDropResponseAttribs[11], function(response){
+		details['dateUpdated'] = response;
+	});
 
 	callback(details);
 }
