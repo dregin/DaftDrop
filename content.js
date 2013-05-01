@@ -81,6 +81,11 @@ function parseAdInfo(webServiceResponse, callback){
 	numberWithCommas(daftDropResponseAttribs[2], function(prettifiedOriginalPrice){
 		details['originalPrice'] = "€" + prettifiedOriginalPrice;
 	});
+
+	// Get Date information
+	details['dateAdded'] = getDate(daftDropResponseAttribs[5]);
+	details['dateUpdated'] = getDate(daftDropResponseAttribs[11]);
+
 	callback(details);
 }
 
