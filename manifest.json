@@ -1,8 +1,9 @@
 {
    "background": {"scripts": ["background.js"] },
    "content_scripts": [ {
-      "js": [ "content.js",
-               "dates.js" ],
+      "js": [ "dates.js",
+               "content.js"
+            ],
       "css":        ["content.css"],
       "matches": [ "http://www.daft.ie/*" ]
    } ],
