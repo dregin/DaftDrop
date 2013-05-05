@@ -52,10 +52,15 @@ function load(fileName, callback){
 }
 
 function updateDaftDropDiv(details){
-	document.getElementById('original-price-value').innerText = details['originalPrice'];
-	document.getElementById('change-percentage-value').innerText = details['changePercentageSpan'];
-	document.getElementById('change-percentage-date-added-value').innerText = details['dateAdded'];
-	document.getElementById('change-percentage-date-last-value').innerText = details['dateUpdated'];
+	if(details !== 'Not Collected Yet'){
+		document.getElementById('original-price-value').innerText = details['originalPrice'];
+		document.getElementById('change-percentage-value').innerText = details['changePercentageSpan'];
+		document.getElementById('change-percentage-date-added-value').innerText = details['dateAdded'];
+		document.getElementById('change-percentage-date-last-value').innerText = details['dateUpdated'];
+	}
+	else{
+		document.getElementById('drop-div').innerText = 'Information for this advert hasn\'t been collected by daftdrop.com yet.';
+	}
 }
 
 function parseAdInfo(webServiceResponse, callback){
@@ -71,32 +76,36 @@ function parseAdInfo(webServiceResponse, callback){
 	*/
 
 	// Get Price Information
+	if (daftDropResponseAttribs.length > 4){
+		details['currentPrice'] = daftDropResponseAttribs[8];
+		details['originalPrice'] = daftDropResponseAttribs[2];
 
-	details['currentPrice'] = daftDropResponseAttribs[8];
-	details['originalPrice'] = daftDropResponseAttribs[2];
+		getChangePercentageHtml(details['currentPrice'], details['originalPrice'], function(response){
+			details['changePercentageSpan'] = response;
+		});
 
-	getChangePercentageHtml(details['currentPrice'], details['originalPrice'], function(response){
-		details['changePercentageSpan'] = response;
-	});
+		numberWithCommas(daftDropResponseAttribs[2], function(prettifiedOriginalPrice){
+			details['originalPrice'] = "€" + prettifiedOriginalPrice;
+		});
 
-	numberWithCommas(daftDropResponseAttribs[2], function(prettifiedOriginalPrice){
-		details['originalPrice'] = "€" + prettifiedOriginalPrice;
-	});
+		// Get Date information
+		getDate(daftDropResponseAttribs[5], function(response){
+			details['dateAdded'] = response;
+		});
 
-	// Get Date information
-	getDate(daftDropResponseAttribs[5], function(response){
-		details['dateAdded'] = response;
-	});
+		getDate(daftDropResponseAttribs[11], function(response){
+			details['dateUpdated'] = response;
+		});
 
-	getDate(daftDropResponseAttribs[11], function(response){
-		details['dateUpdated'] = response;
-	});
-
-	callback(details);
+		callback(details);
+	}
+	else{
+		callback('Not Collected Yet');
+	}
 }
 
 function getChangePercentageHtml(currentPrice, originalPrice, callback){
-	if (originalPrice > currentPrice){
+	if (originalPrice > currentPrice && currentPrice > 9){		// currentPrice's length is greater than 1... not sure what the field actually corresponds to, if there's no 
 		var changeString = "-" + (((originalPrice - currentPrice)/originalPrice)*100).toFixed(2) + "%";
 		document.getElementById('change-percentage-value').setAttribute('class', 'dropped');
 	}
@@ -105,6 +114,7 @@ function getChangePercentageHtml(currentPrice, originalPrice, callback){
 		document.getElementById('change-percentage-value').setAttribute('class', 'increased');
 	}
 	else{
+		document.getElementById('change-percentage-value').setAttribute('class', 'noChange');
 		var changeString = "None";
 	}
 	callback(changeString);
