@@ -1,7 +1,3 @@
-var dropDivTEST = document.createElement('div');
-dropDivTEST.setAttribute('id', 'daft-drop');
-dropDivTEST.innerHTML = 'TEST DIV';
-
 var clearFix = document.createElement('div');
 clearFix.setAttribute('class', 'clearfix');
 
