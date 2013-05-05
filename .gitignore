@@ -17,6 +17,7 @@ local.properties
 .loadpath
 *.crx
 *.pem
+*.zip
 
 # External tool builders
 .externalToolBuilders/
