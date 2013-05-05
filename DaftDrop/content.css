@@ -45,6 +45,10 @@
 	color: green;
 }
 
+.noChange {
+	color: gray;
+}
+
 #drop-table td{
 	width: 5em;
 }
