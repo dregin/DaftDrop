@@ -57,7 +57,7 @@ function vK(a) {
 }
 
 function getDate(dateString, callback){
-    dateString = dateString.replace(/\W/g, '')
+    dateString = dateString.replace(/\'/g, '')
     if(dateString !== '00'){
         var theDate = vK(dateString);
 
