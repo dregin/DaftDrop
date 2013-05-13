@@ -77,47 +77,99 @@ function parseAdInfo(webServiceResponse, callback){
 
 	// Get Price Information
 	if (daftDropResponseAttribs.length > 4){
-		details['currentPrice'] = daftDropResponseAttribs[8];
 		details['originalPrice'] = daftDropResponseAttribs[2];
+		var numPrices = getNumberOfPrices(daftDropResponseAttribs);
+		if (details['originalPrice'] !== '-1'){
+			details['currentPrice'] = getCurrentPrice(daftDropResponseAttribs);
+			getChangePercentageHtml(details['currentPrice'], details['originalPrice'], function(response){
+				details['changePercentageSpan'] = response;
+			});
+			numberWithCommas(details['originalPrice'], function(prettifiedOriginalPrice){
+				details['originalPrice'] = "€" + prettifiedOriginalPrice;
+			});
 
-		getChangePercentageHtml(details['currentPrice'], details['originalPrice'], function(response){
-			details['changePercentageSpan'] = response;
-		});
-
-		numberWithCommas(daftDropResponseAttribs[2], function(prettifiedOriginalPrice){
-			details['originalPrice'] = "€" + prettifiedOriginalPrice;
-		});
-
-		// Get Date information
-		getDate(daftDropResponseAttribs[5], function(response){
-			details['dateAdded'] = response;
-		});
-
-		getDate(daftDropResponseAttribs[11], function(response){
-			details['dateUpdated'] = response;
-		});
-
-		callback(details);
+			// Get Date information
+			getDate(daftDropResponseAttribs[5], function(response){
+				details['dateAdded'] = response;
+			});
+			if(numPrices === 2){
+				getDate(daftDropResponseAttribs[11], function(response){
+					details['dateUpdated'] = response;
+				});
+			}
+			else if(numPrices > 2){
+				getDate(daftDropResponseAttribs[5 + (6 * (numPrices -1))], function(response){
+					details['dateUpdated'] = response;
+				});
+			}
+			else{
+				details['dateUpdated'] = 'Never';
+			}
+			callback(details);
+		}
+		else{
+			details['originalPrice'] = 'P.O.A.';
+			details['changePercentageSpan'] = 'N/A';
+			details['currentPrice'] = getCurrentPrice(daftDropResponseAttribs);
+			getDate(daftDropResponseAttribs[5], function(response){
+				details['dateAdded'] = response;
+			});
+			if(numPrices === 2){
+				getDate(daftDropResponseAttribs[11], function(response){
+					details['dateUpdated'] = response;
+				});
+			}
+			else if(numPrices > 2){
+				getDate(daftDropResponseAttribs[5 + (6 * (numPrices -1))], function(response){
+					details['dateUpdated'] = response;
+				});
+			}
+			else{
+				details['dateUpdated'] = 'Never';
+			}
+			callback(details);
+		}
 	}
 	else{
 		callback('Not Collected Yet');
 	}
 }
 
+function getNumberOfPrices(daftDropResponseAttribs){
+		for(var i = 0; i< daftDropResponseAttribs.length; i++){
+		if (daftDropResponseAttribs[i].charAt(0) === '['){		// This starts at a different index for different number of prices. Goes up by 6 places for each price.
+			return numPrices = (i - 23)/6;
+		}
+	}
+}
+function getCurrentPrice(daftDropResponseAttribs){
+	var numPrices = 0;
+	var currentPrice = 0;
+	var numPrices = getNumberOfPrices(daftDropResponseAttribs);
+
+	if(numPrices > 2){
+		currentPrice = daftDropResponseAttribs[2 + (6 * (numPrices-1))];
+	}
+	else{
+		currentPrice = daftDropResponseAttribs[8];
+	}
+	return currentPrice;
+}
 function getChangePercentageHtml(currentPrice, originalPrice, callback){
+	var changeString = '';
 	if (originalPrice > currentPrice && currentPrice > 9){		// currentPrice's length is greater than 1... not sure what the field actually corresponds to, if there's no 
-		var changeString = "-" + (((originalPrice - currentPrice)/originalPrice)*100).toFixed(2) + "%";
+		changeString = "-" + (((originalPrice - currentPrice)/originalPrice)*100).toFixed(2) + "%";
 		document.getElementById('change-percentage-value').setAttribute('class', 'dropped');
 	}
 	else if(originalPrice < currentPrice){
-		var changeString = "+" + (((currentPrice - originalPrice)/currentPrice)*100).toFixed(2) + "%";
+		changeString = "+" + (((currentPrice - originalPrice)/currentPrice)*100).toFixed(2) + "%";
 		document.getElementById('change-percentage-value').setAttribute('class', 'increased');
 	}
 	else{
 		document.getElementById('change-percentage-value').setAttribute('class', 'noChange');
-		var changeString = "None";
+		changeString = "None";
 	}
-	callback(changeString);
+	callback(changeString);	
 }
 function numberWithCommas(x, callback) {
     callback(x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
